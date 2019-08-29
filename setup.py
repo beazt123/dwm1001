@@ -5,7 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['DWM1001'],
+    packages=['dwm1001'],
     package_dir={'': 'src'})
 
 setup(**setup_args)
