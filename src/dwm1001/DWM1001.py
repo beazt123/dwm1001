@@ -116,8 +116,6 @@ class DWM1001DevBoard:
 		ls = record2
 		dic = {}
 		if ls != []:
-			
-			num_anchors = int(ls[0])
 			truncated_list = ls[1:]
 
 			# Check if the localisation happened
@@ -125,9 +123,63 @@ class DWM1001DevBoard:
 				dic['x'] = truncated_list[-4]
 				dic['y'] = truncated_list[-3]
 				dic['z'] = truncated_list[-2]
-				dic['QF'] = truncated_list[-1]
+				dic['qf'] = truncated_list[-1]
 				dic['status'] = True
 				return dic
 			
 		dic['status'] = False
 		return dic
+
+	@staticmethod
+	def process_str(bstring):
+		dic = {}
+		string = str(bstring.decode('utf-8')).strip('\r\n')
+		string_csv = string.split(',')[1:]
+		if string_csv == []:
+			dic['status'] = False
+			return dic
+
+		numAnchors = int(string_csv.pop(0))
+		anchors = []
+		for i in range(numAnchors):
+			anchor = {}
+			anchorData = string_csv[6*i:6*i+6]
+			anchorID = anchorData[1]
+			anchorX = float(anchorData[2])
+			anchorY = float(anchorData[3])
+			anchorZ = float(anchorData[4])
+			anchorDist = float(anchorData[5])
+
+			anchor["id"] = anchorID
+			anchor["x"] = anchorX
+			anchor["y"] = anchorY
+			anchor["z"] = anchorZ
+			anchor["dist"] = anchorDist
+			anchors.append(anchor)
+
+		dic["anchors"] = anchors
+
+		if string_csv[-5] == "POS":
+			dic['x'] = float(string_csv[-4])
+			dic['y'] = float(string_csv[-3])
+			dic['z'] = float(string_csv[-2])
+			dic['qf'] = float(string_csv[-1])
+			dic['status'] = True
+			return dic
+
+		dic['status'] = False
+		return dic
+
+'''
+dict
+	anchors[]
+		str id
+		float x
+		float y
+		float z
+		float dist
+	status
+'''
+
+if __name__ == '__main__':
+	print(list_devices())
