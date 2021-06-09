@@ -1,64 +1,36 @@
 #!/usr/bin/env python
 
-'''
-Ensure that the com port is an absolute working directory.
-The UWB is a state machine. It maintains the last state left by the previous program.
-The __init__ standardises the  program to start form the 'ready' state.
-Do ensure to stop the data flow manually otherwise the program will only work alternately.
-
-Possible states:
-- Reset: When the UWB is plugged in the first time/is manually reset by code or by presing the button
-- 'ready': when no data in flowing in but the UWB is online
-- Data flowing in - when the UWB is continuously sending in data waiting for a keyboard interrupt
-'''
 import serial
-import random
-import sys
-import glob
 import datetime as dt
 from time import sleep
 
-
-def list_devices(): #returns a list of com ports on the system(Windows, linux and darwin) otherwise raises environment Error
-    """ Lists serial port names
-
-        :raises EnvironmentError:
-            On unsupported or unknown platforms
-        :returns:
-            A list of the serial ports available on the system
-    """
-    if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(256)]
-    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        # this excludes your current terminal "/dev/tty"
-        ports = glob.glob('/dev/tty[A-Za-z]*')
-    elif sys.platform.startswith('darwin'):
-        ports = glob.glob('/dev/tty.*')
-    else:
-        raise EnvironmentError('Unsupported platform')
-
-    result = []
-    for port in ports:
-        try:
-            s = serial.Serial(port)
-            s.close()
-            result.append(port)
-        except (OSError, serial.SerialException):
-            pass
-    return result # in the form of a list
-
-
 class DWM1001DevBoard: 
+	"""!
+	This class serves as an API interface that communicates with the UWB beacon via serial communication.
+	The beacon is a state machine with 3 states and low level methods are used to switch from state to state.
+	Users can ignore the state transitions and use the high level methods which will abstract the state transitions for you.
+    """
 	def __init__(self, com_port, baud_rate = 115200):
+		"""!Initialises the communication with the UWB beacon that is currently plugged in to the machine via serial. Throws an error on linux if the port is not opened by the super user.
+		@param str com_port : The open port that the object can use to communicate with the beacon via serial.
+ 
+		@returns @c DWM1001DevBoard object in shell mode
+		"""
 		
-		# 'Just-plugged-in' state
+		##!@private
 		self.si = serial.Serial(com_port, baud_rate, timeout=1)
+
 		# Ensure that the port is open
 		if not self.si.isOpen():
 			self.si.open()
 		self.get_ready()
 
 	def get_ready(self):
+		"""!Switches the UWB beacon from whichever state it was in to the READY state.
+		@param None
+
+		@returns @c DWM1001DevBoard object in shell mode
+		"""
 		x = self.si.in_waiting
 		sleep(1)
 		y = self.si.in_waiting
@@ -74,6 +46,12 @@ class DWM1001DevBoard:
 		return self
 
 	def switch_to_serial(self):	
+		"""!Switches to shell mode. 
+		However, this function only works when the UWB beacon has just been plugged in and it is the first time the programme talks to the beacon since it is plugged in.
+		@param None
+
+		@returns @c DWM1001DevBoard object in shell mode
+		"""
 		self.si.write(b'\r\r')
 		sleep(1) #impt to wait for 1s for this cmd to work
 
@@ -83,57 +61,74 @@ class DWM1001DevBoard:
 		return self
 
 	def stop_data_flow(self): 
+		"""!Equivalent to pressing ENTER to the terminal when the UWB is in shell mode. 
+		Used to stop the previous command, especially if the previous command causes the beacon to send serial data to the computer
+ 		@param None
+		
+		@returns @c DWM1001DevBoard object in shell mode
+		"""
 		self.si.write(b'\r') # Stops the data flow, but input buffer will still contain the leftover data
 		self.si.reset_input_buffer()		# Ensures that the input buffer is 100% cleared
 		self.si.reset_input_buffer()
 		return self
 
 	def cmd(self, cmd): 
+		"""!Helps to send a command to the UWB beacon via the terminal in shell mode. Only known commands are allowed. 
+		Common commends are 'lep', 'lec' and 'les'. This library uses the 'lec' command which requests for location data in csv format.
+		@param str cmd : A command to send to the UWB when it is in shell mode.
+ 
+		@returns @c DWM1001DevBoard object
+		"""
 		ent_cmd = cmd.lower() + '\r'
 		self.si.write(ent_cmd.encode('utf-8'))
 		return self
 
 	def start(self):
-		self.cmd("lec")
-
-	def localize(self):
-		line = self.si.readline()
-		return line
-
-	@staticmethod
-	def process_data(bstring):
-	# Truncate away the irrelevant parts, convert the bString into a list
-		record2 = []
-		ln_strip = bstring.strip(b'\r\n')		#   DIST,3,AN0,582A,0.00,0.80,0.00,0.46,AN1,5AA5,0.00,0.00,0.00,0.77,AN2,95A7,0.80,0.00,0.00,0.92,POS,0.26,0.60,0.36,56
-		single_record = ln_strip.split(b',')	# ['DIST','3','AN0','582A','0.00','0.80','0.00','0.46','AN1','5AA5','0.00','0.00','0.00','0.77','AN2','95A7','0.80','0.00','0.00','0.92','POS','0.26','0.60','0.36','56']
-		record = single_record[1:]				# 			 ['AN0','582A','0.00','0.80','0.00','0.46','AN1','5AA5','0.00','0.00','0.00','0.77','AN2','95A7','0.80','0.00','0.00','0.92','POS','0.26','0.60','0.36','56']
-		for element in record:
-			try:
-				record2.append(float(element))
-			except ValueError:
-				record2.append(str(element.decode('utf-8'))) #['AN0','582A',0.00,0.80,0.00,0.46,'AN1','5AA5',0.00,0.00,0.00,0.77,'AN2','95A7',0.80,0.00,0.00,0.92,'POS',0.26,0.60,0.36,56]
+		"""!A high level method to kickstart the localisation process.
+		Subsequently, use self.get_localisation_str() to receive the localisation data as an unprocessed string.
 		
-		ls = record2
-		dic = {}
-		if ls != []:
-			truncated_list = ls[1:]
+		@param None
+		
+		@returns @c DWM1001DevBoard object
+		"""
+		self.cmd("lec")
+		return self
 
-			# Check if the localisation happened
-			if truncated_list[-5] == "POS":
-				dic['x'] = truncated_list[-4]
-				dic['y'] = truncated_list[-3]
-				dic['z'] = truncated_list[-2]
-				dic['qf'] = truncated_list[-1]
-				dic['status'] = True
-				return dic
-			
-		dic['status'] = False
-		return dic
+	def get_localisation_str(self):
+		"""!Reads the localisation data in the buffer.
+		Only works if self.start() has been used.
+		Keep using this method to get updated localisation data from the beacon.
+		Subsequently, you can use DWM1001DevBoard.process_localisation_str(string) to parse it into a dictionary.
+ 
+		@param None
+
+		@returns @c String The unprocessed localisation data
+		"""
+		line_byte_str = self.si.readline()
+		line_str = str(line_byte_str.decode('utf-8'))
+		return line_str
 
 	@staticmethod
-	def process_str(bstring):
+	def process_localisation_str(localisation_str):
+		"""!Parses the localisation data into a dictionary
+		The dictionary will then have the following attributes:
+		- bool status: whether the beacon managed to localise successfully.
+		- Anchor[] anchors: A list of anchors that the beacon chose to calculate its coordinates. Each Anchor dictionary has the following attributes:
+			- str id: The BLE id of the anchor.
+			- float x,y,z: The pre-set coordinates of the anchor.
+			- float dist: The TWR distance, measured using UWB, between the anchor and beacon.
+		- float x,y,z: The coordinates calculated by the beacon based on the TWR distance from the anchors it chose to communicate with.
+		- float qf: An estimate of the quality of the localisation (0-100). The higher this number, the better.
+		
+		@param str localisation_str : The unprocessed localisation data
+
+
+ 
+		@return Dict.
+
+		"""
 		dic = {}
-		string = str(bstring.decode('utf-8')).strip('\r\n')
+		string = localisation_str.strip('\r\n')
 		string_csv = string.split(',')[1:]
 		if string_csv == []:
 			dic['status'] = False
@@ -169,17 +164,3 @@ class DWM1001DevBoard:
 
 		dic['status'] = False
 		return dic
-
-'''
-dict
-	anchors[]
-		str id
-		float x
-		float y
-		float z
-		float dist
-	status
-'''
-
-if __name__ == '__main__':
-	print(list_devices())

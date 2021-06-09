@@ -1,0 +1,21 @@
+\hypertarget{namespacedwm1001_1_1_d_w_m1001}{}\doxysection{dwm1001.\+DWM1001 Namespace Reference}
+\label{namespacedwm1001_1_1_d_w_m1001}\index{dwm1001.DWM1001@{dwm1001.DWM1001}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}
+\begin{DoxyCompactList}\small\item\em Documentation for the FUCKING CLASS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Ensure that the com port is an absolute working directory.
+The UWB is a state machine. It maintains the last state left by the previous program.
+The __init__ standardises the  program to start form the 'ready' state.
+Do ensure to stop the data flow manually otherwise the program will only work alternately.
+
+Possible states:
+- Reset: When the UWB is plugged in the first time/is manually reset by code or by presing the button
+- 'ready': when no data in flowing in but the UWB is online
+- Data flowing in - when the UWB is continuously sending in data waiting for a keyboard interrupt
+\end{DoxyVerb}
+ 

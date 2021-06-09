@@ -1,0 +1,205 @@
+\hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{}\doxysection{dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board Class Reference}
+\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+
+
+This class serves as an API interface that communicates with the UWB beacon via serial communication.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a6de04169d920d1804a068206b5965319}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, com\+\_\+port, baud\+\_\+rate=115200)
+\begin{DoxyCompactList}\small\item\em Initialises the communication with the UWB beacon that is currently plugged in to the machine via serial. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a76a4465b58f2ba65c778676e6138e4da}{get\+\_\+ready}} (self)
+\begin{DoxyCompactList}\small\item\em Switches the UWB beacon from whichever state it was in to the READY state. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ade912cfc02fbbd3b75c142857979e5d2}{switch\+\_\+to\+\_\+serial}} (self)
+\begin{DoxyCompactList}\small\item\em Switches to shell mode. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_aa13f7c8a9d96013f7b54ac8fcf8868df}{stop\+\_\+data\+\_\+flow}} (self)
+\begin{DoxyCompactList}\small\item\em Equivalent to pressing ENTER to the terminal when the UWB is in shell mode. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a037139e7b238b593ec006c50006a7415}{cmd}} (self, cmd)
+\begin{DoxyCompactList}\small\item\em Helps to send a command to the UWB beacon via the terminal in shell mode. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ad73156935955945d41634fe6a33ccb27}{start}} (self)
+\begin{DoxyCompactList}\small\item\em A high level method to kickstart the localisation process. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_adf4145ffe4c5c5d6934b430ea9e2d8e2}{get\+\_\+localisation\+\_\+str}} (self)
+\begin{DoxyCompactList}\small\item\em Reads the localisation data in the buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ac3f8234118ad2535d46b2e8aa6db74e2}{process\+\_\+localisation\+\_\+str}} (localisation\+\_\+str)
+\begin{DoxyCompactList}\small\item\em Parses the localisation data into a dictionary The dictionary will then have the following attributes\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class serves as an API interface that communicates with the UWB beacon via serial communication. 
+
+The beacon is a state machine with 3 states and low level methods are used to switch from state to state. Users can ignore the state transitions and use the high level methods which will abstract the state transitions for you. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a6de04169d920d1804a068206b5965319}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a6de04169d920d1804a068206b5965319}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{com\+\_\+port,  }\item[{}]{baud\+\_\+rate = {\ttfamily 115200} }\end{DoxyParamCaption})}
+
+
+
+Initialises the communication with the UWB beacon that is currently plugged in to the machine via serial. 
+
+Throws an error on linux if the port is not opened by the super user. 
+\begin{DoxyParams}{Parameters}
+{\em str} & com\+\_\+port \+: The open port that the object can use to communicate with the beacon via serial.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object in shell mode 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a037139e7b238b593ec006c50006a7415}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a037139e7b238b593ec006c50006a7415}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!cmd@{cmd}}
+\index{cmd@{cmd}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{cmd()}{cmd()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+cmd (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Helps to send a command to the UWB beacon via the terminal in shell mode. 
+
+Only known commands are allowed. Common commends are \textquotesingle{}lep\textquotesingle{}, \textquotesingle{}lec\textquotesingle{} and \textquotesingle{}les\textquotesingle{}. This library uses the \textquotesingle{}lec\textquotesingle{} command which requests for location data in csv format. 
+\begin{DoxyParams}{Parameters}
+{\em str} & cmd \+: A command to send to the UWB when it is in shell mode.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_adf4145ffe4c5c5d6934b430ea9e2d8e2}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_adf4145ffe4c5c5d6934b430ea9e2d8e2}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!get\_localisation\_str@{get\_localisation\_str}}
+\index{get\_localisation\_str@{get\_localisation\_str}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{get\_localisation\_str()}{get\_localisation\_str()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+get\+\_\+localisation\+\_\+str (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Reads the localisation data in the buffer. 
+
+Only works if self.\+start() has been used. Keep using this method to get updated localisation data from the beacon. Subsequently, you can use DWM1001\+Dev\+Board.\+process\+\_\+localisation\+\_\+str(string) to parse it into a dictionary.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily String} The unprocessed localisation data 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a76a4465b58f2ba65c778676e6138e4da}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_a76a4465b58f2ba65c778676e6138e4da}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!get\_ready@{get\_ready}}
+\index{get\_ready@{get\_ready}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{get\_ready()}{get\_ready()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+get\+\_\+ready (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Switches the UWB beacon from whichever state it was in to the READY state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object in shell mode 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ac3f8234118ad2535d46b2e8aa6db74e2}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ac3f8234118ad2535d46b2e8aa6db74e2}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!process\_localisation\_str@{process\_localisation\_str}}
+\index{process\_localisation\_str@{process\_localisation\_str}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{process\_localisation\_str()}{process\_localisation\_str()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+process\+\_\+localisation\+\_\+str (\begin{DoxyParamCaption}\item[{}]{localisation\+\_\+str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Parses the localisation data into a dictionary The dictionary will then have the following attributes\+: 
+
+
+\begin{DoxyItemize}
+\item bool status\+: whether the beacon managed to localise successfully.
+\item Anchor\mbox{[}\mbox{]} anchors\+: A list of anchors that the beacon chose to calculate its coordinates. Each Anchor dictionary has the following attributes\+:
+\begin{DoxyItemize}
+\item str id\+: The BLE id of the anchor.
+\item float x,y,z\+: The pre-\/set coordinates of the anchor.
+\item float dist\+: The TWR distance, measured using UWB, between the anchor and beacon.
+\end{DoxyItemize}
+\item float x,y,z\+: The coordinates calculated by the beacon based on the TWR distance from the anchors it chose to communicate with.
+\item float qf\+: An estimate of the quality of the localisation (0-\/100). The higher this number, the better.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & localisation\+\_\+str \+: The unprocessed localisation data\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVerb}    @return Dict.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ad73156935955945d41634fe6a33ccb27}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ad73156935955945d41634fe6a33ccb27}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!start@{start}}
+\index{start@{start}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+start (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+A high level method to kickstart the localisation process. 
+
+Subsequently, use self.\+get\+\_\+localisation\+\_\+str() to receive the localisation data as an unprocessed string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_aa13f7c8a9d96013f7b54ac8fcf8868df}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_aa13f7c8a9d96013f7b54ac8fcf8868df}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!stop\_data\_flow@{stop\_data\_flow}}
+\index{stop\_data\_flow@{stop\_data\_flow}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{stop\_data\_flow()}{stop\_data\_flow()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+stop\+\_\+data\+\_\+flow (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Equivalent to pressing ENTER to the terminal when the UWB is in shell mode. 
+
+Used to stop the previous command, especially if the previous command causes the beacon to send serial data to the computer 
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object in shell mode 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ade912cfc02fbbd3b75c142857979e5d2}\label{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board_ade912cfc02fbbd3b75c142857979e5d2}} 
+\index{dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}!switch\_to\_serial@{switch\_to\_serial}}
+\index{switch\_to\_serial@{switch\_to\_serial}!dwm1001.DWM1001.DWM1001DevBoard@{dwm1001.DWM1001.DWM1001DevBoard}}
+\doxysubsubsection{\texorpdfstring{switch\_to\_serial()}{switch\_to\_serial()}}
+{\footnotesize\ttfamily def dwm1001.\+DWM1001.\+DWM1001\+Dev\+Board.\+switch\+\_\+to\+\_\+serial (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Switches to shell mode. 
+
+However, this function only works when the UWB beacon has just been plugged in and it is the first time the programme talks to the beacon since it is plugged in. 
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classdwm1001_1_1_d_w_m1001_1_1_d_w_m1001_dev_board}{DWM1001\+Dev\+Board}}} object in shell mode 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/dwm1001/DWM1001.\+py\end{DoxyCompactItemize}
