@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import serial
-import datetime as dt
 from time import sleep
 
 class DWM1001DevBoard: 
